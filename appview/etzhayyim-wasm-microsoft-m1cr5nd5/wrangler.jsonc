@@ -1,4 +1,31 @@
 // no-server-key: read-only — pending Stage A-E member-signed-writes refactor per ADR-2605231525
+//
+// cljs migration note (svelte-to-cljs wave 10): this repo differs from most
+// sibling migrations. `main` was ALREADY `src/app.ts` before this change —
+// it never pointed at a SvelteKit build output, so this migration leaves it
+// untouched; that path is not this migration's business.
+//
+// The only thing this migration touches here is `assets.directory`, which
+// pointed at the now-deleted `./svelte/build` (the retired SvelteKit
+// frontend's build output) and now points at `./cljs/public` (the new
+// shadow-cljs + reagent + re-frame + jp-go-dds static bundle, see cljs/).
+//
+// Flagged, not fixed, by this migration: `src/app.ts` (this Worker's
+// `main`) does not reference `ASSETS` or call `env.ASSETS.fetch(...)`
+// anywhere in its handler (verified by reading the file and grepping it for
+// both identifiers — zero matches). That means the asset bundle this
+// `assets.directory` points at is not reachable through this Worker's own
+// fetch handler; Cloudflare's own assets routing may still serve it ahead
+// of the Worker depending on deployment configuration, but this migration
+// does not verify that either way. This is a PRE-EXISTING condition (the
+// same was true when `assets.directory` pointed at `./svelte/build`) — not
+// something introduced or something this migration attempts to fix.
+//
+// `vars.APP_FRAMEWORK` is `"ts-native"`, not a `sveltekit-*` value, so it is
+// left unchanged.
+//
+// This edit is UNVERIFIED: `wrangler deploy` / `wrangler dev` were NOT run
+// against it.
 {
   "name": "kotodama-m1cr5nd5",
   "main": "src/app.ts",
@@ -6,7 +33,7 @@
   "compatibility_flags": ["nodejs_compat","nodejs_als"],
   "alias": { "@etzhayyim/kotodama-host-sdk": "/Users/junkawasaki/etzhayyim/etzhayyim-apps-etzhayyim/40-engine/kotoba/crates/kotoba-kotodama/sdk/kotodama-host-sdk/src/index.ts", "pg": "/Users/junkawasaki/etzhayyim/etzhayyim-apps-etzhayyim/node_modules/.pnpm/pg@8.20.0/node_modules/pg/lib/index.js", "@etzhayyim/xrpc/transport": "/Users/junkawasaki/etzhayyim/etzhayyim-apps-etzhayyim/10-protocol/xrpc/src/transport.ts", "@etzhayyim/xrpc/auth": "/Users/junkawasaki/etzhayyim/etzhayyim-apps-etzhayyim/10-protocol/xrpc/src/auth.ts", "@etzhayyim/xrpc/error": "/Users/junkawasaki/etzhayyim/etzhayyim-apps-etzhayyim/10-protocol/xrpc/src/error.ts", "@etzhayyim/xrpc/nsid": "/Users/junkawasaki/etzhayyim/etzhayyim-apps-etzhayyim/10-protocol/xrpc/src/nsid.ts", "@etzhayyim/xrpc/encode": "/Users/junkawasaki/etzhayyim/etzhayyim-apps-etzhayyim/10-protocol/xrpc/src/encode.ts", "@cloudflare/puppeteer": "/Users/junkawasaki/etzhayyim/etzhayyim-apps-etzhayyim/node_modules/.pnpm/@cloudflare+puppeteer@0.0.14_bufferutil@4.1.0_utf-8-validate@5.0.10/node_modules/@cloudflare/puppeteer/lib/esm/puppeteer/puppeteer-cloudflare.js" },
   "assets": {
-    "directory": "./svelte/build",
+    "directory": "./cljs/public",
     "binding": "ASSETS",
     "html_handling": "auto-trailing-slash",
     "not_found_handling": "single-page-application"

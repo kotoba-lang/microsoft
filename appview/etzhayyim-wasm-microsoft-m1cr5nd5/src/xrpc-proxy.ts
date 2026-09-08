@@ -1,3 +1,32 @@
+// SVELTEKIT-BACKEND-PRESERVED: moved out of svelte/ during the cljs migration; not wired.
+//
+// Moved verbatim (only this header comment added) from
+// `svelte/src/routes/xrpc/[...path]/+server.ts`, a SvelteKit server-route
+// file that lived alongside this app's now-retired SvelteKit frontend
+// (`svelte/`, removed in this migration). It is a generic XRPC-shaped
+// proxy: for any `nsid` path segment it forwards the request body to
+// `AGENTGATEWAY_MCP_ROUTER_URL` (default
+// `https://mcp.etzhayyim.com/xrpc/com.etzhayyim.mcp.message`) as an MCP
+// `tools/call` JSON-RPC envelope and unwraps the result.
+//
+// It imports from `@sveltejs/kit` (`json`, `RequestEvent`, and the
+// SvelteKit-generated `./$types`), none of which resolve now that the
+// SvelteKit toolchain has been removed — it will not run as-is.
+//
+// Relationship to `src/app.ts` (this repo's actual deployed Worker,
+// `wrangler.jsonc` `main`): the two do NOT implement the same thing the
+// way they did in some sibling migrations. `src/app.ts` does not proxy to
+// an external MCP router at all — via `createWorkerExport` from
+// `@etzhayyim/kotodama-host-sdk` it registers the specific NSIDs
+// `com.etzhayyim.apps.microsoft.{sendMail,sendDraft,listInbox,
+// batchMoveMessages,listDrafts}` as SDK commands/queries and executes the
+// Microsoft Graph read/write logic in-process (see that file). This
+// module instead forwards *any* nsid to `AGENTGATEWAY_MCP_ROUTER_URL` as
+// a generic MCP passthrough — a different transport and a different
+// upstream, not merely a different backend for the same NSIDs. Whether
+// any overlap between the two exists in practice, and whether/how to
+// revive this file, is an open product decision this migration does not
+// make.
 import { json, type RequestEvent } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
 
