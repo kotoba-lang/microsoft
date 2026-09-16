@@ -70,7 +70,7 @@
    :app/routes []
    :app/vars []
    :app/xrpc? true
-   :app/relative-path "cljs/src/microsoft/app.cljs"})
+   :app/relative-path "cljs/src/microsoft/app.cljk"})
 
 (rf/reg-event-db
  :initialize-db
