@@ -1,6 +1,6 @@
 # etzhayyim-project-microsoft
 
-Microsoft Graph / Microsoft 365 を Matrix protocol に正規化して取り込む project。共通ルールは `60-apps/CLAUDE.md` を参照し、このファイルには Microsoft 統合固有の実装方針だけを書く。
+Microsoft Graph / Microsoft 365 を Matrix protocol に正規化して取り込む project。共通ルールは `60-apps/AGENTS.md` を参照し、このファイルには Microsoft 統合固有の実装方針だけを書く。
 
 ## Components
 

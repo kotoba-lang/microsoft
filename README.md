@@ -508,7 +508,7 @@ Microsoft domain を Matrix に取り込むときは、Matrix の room/event/use
 
 ```text
 60-apps/etzhayyim-project-microsoft/
-  CLAUDE.md
+  AGENTS.md
   README.md
   OWNERS
   wasm/
