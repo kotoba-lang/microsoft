@@ -58,7 +58,7 @@ function resolveFromUpn(input: { fromUpn?: string }, env: Record<string, unknown
 
 // ── MCP tool registration ────────────────────────────────────────────────
 // Tools are registered once as `com.etzhayyim.tool.tool` records in `vertex_capability`
-// (via `com.etzhayyim.kagami.sql` INSERT). See `60-apps/etzhayyim-project-microsoft/CLAUDE.md`
+// (via `com.etzhayyim.kagami.sql` INSERT). See `60-apps/etzhayyim-project-microsoft/AGENTS.md`
 // §"MCP tool registration" for the one-shot seed command. The PDS `com.etzhayyim.tool.register*`
 // XRPC handlers are currently unusable (RisingWave rejects the `ON CONFLICT` Kysely
 // emits); direct INSERT is the workaround.
